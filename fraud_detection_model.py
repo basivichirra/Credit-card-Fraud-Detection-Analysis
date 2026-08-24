@@ -16,7 +16,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 
-data = pd.read_csv("creditcard.csv")
+data = pd.read_csv("creditcard_sample.csv")
 
 print(data.shape)
 
@@ -46,6 +46,13 @@ X_test_scaled = scaler.transform(X_test)
 model = LogisticRegression(max_iter=10000, class_weight="balanced")
 
 model.fit(X_train_scaled, y_train)
+
+import joblib
+
+joblib.dump(model, "models/fraud_model.pkl")
+joblib.dump(scaler, "models/scaler.pkl")
+
+print("Model and scaler saved successfully")
 
 predictions = model.predict(X_test_scaled)
 
@@ -101,6 +108,5 @@ results.to_csv("fraud_predictions.csv", index=False)
 
 print("File exported successfully")
 
-from google.colab import files
-files.download("fraud_predictions.csv")
+
 

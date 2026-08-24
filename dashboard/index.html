@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Risk Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+            <div>
+                <h1>AI Risk Manager</h1>
+                <p>AI-powered payment fraud detection and risk analysis</p>
+            </div>
+        </header>
+
+        <section class="stats">
+
+            <div class="card">
+                <h3>Fraud Probability</h3>
+                <div id="probability">--</div>
+            </div>
+
+            <div class="card">
+                <h3>Risk Score</h3>
+                <div id="riskScore">--</div>
+            </div>
+
+            <div class="card">
+                <h3>Risk Level</h3>
+                <div id="riskLevel">--</div>
+            </div>
+
+            <div class="card">
+                <h3>Decision</h3>
+                <div id="decision">--</div>
+            </div>
+
+        </section>
+
+        <section class="analysis">
+
+            <div class="panel">
+
+                <h2>Analyze Payment</h2>
+
+                <label>Transaction Amount</label>
+
+                <input
+                    type="number"
+                    id="amount"
+                    placeholder="Enter amount"
+                    value="364.19"
+                >
+
+                <label>Transaction Time</label>
+
+                <input
+                    type="number"
+                    id="transactionTime"
+                    placeholder="Enter transaction time"
+                    value="41505"
+                >
+
+                <button onclick="testTransaction()">
+                    Analyze Payment
+                </button>
+
+                <h3 class="demo-title">Demo Scenarios</h3>
+
+                <div class="demo-buttons">
+
+                    <button onclick="loadNormalTransaction()">
+                        Normal Payment
+                    </button>
+
+                    <button onclick="loadSuspiciousTransaction()">
+                        Suspicious Payment
+                    </button>
+
+                    <button onclick="loadFraudTransaction()">
+                        Fraudulent Payment
+                    </button>
+
+                </div>
+
+                <div id="status"></div>
+
+            </div>
+
+            <div class="panel">
+
+                <h2>Top Risk Factors</h2>
+
+                <div id="riskFactors">
+                    No analysis yet.
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="history">
+
+            <div class="panel">
+
+                <h2>Recent Transactions</h2>
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Transaction</th>
+                                <th>Amount</th>
+                                <th>Risk Score</th>
+                                <th>Risk Level</th>
+                                <th>Decision</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="transactionHistory">
+
+                            <tr>
+                                <td colspan="5">
+                                    No transactions analyzed yet.
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

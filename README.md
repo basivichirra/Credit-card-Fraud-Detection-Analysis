@@ -1,131 +1,245 @@
+# AI Risk Manager
 
-# AI-Powered Fraud Detection Analysis
+AI-powered credit card fraud detection and risk analysis system using XGBoost, FastAPI, SHAP explainability, and an interactive web dashboard.
 
-## Project Overview
-This project analyzes financial transactions and detects fraudulent activity using SQL, Machine Learning, and Power BI dashboards.
+## Overview
 
-The goal of the project is to identify fraud patterns, predict high-risk transactions, and visualize fraud insights through an interactive dashboard.
+AI Risk Manager analyzes credit card transactions and estimates the probability of fraud.
 
----
+The system converts the model prediction into an easy-to-understand risk decision:
 
-## Tools & Technologies
+- Low Risk → APPROVE
+- Medium Risk → REVIEW
+- High Risk → BLOCK
 
-- Python
-- SQL
-- Power BI
-- Machine Learning
-- Data Visualization
+It also provides the top factors influencing each prediction using SHAP explainability.
 
-Python was used for model development, SQL for transaction analysis, and the dashboard was built in :contentReference[oaicite:0]{index=0}.
+## Features
 
----
+- Credit card fraud detection
+- XGBoost machine learning model
+- Fraud probability prediction
+- Risk score from 0–100
+- Automated risk classification
+- APPROVE / REVIEW / BLOCK decisions
+- SHAP-based risk factor explanation
+- FastAPI REST API
+- Interactive web dashboard
+- Real transaction demo scenarios
+- Recent transaction history
+- Normal, suspicious, and fraudulent transaction testing
+
+## Machine Learning
+
+The project uses the Credit Card Fraud Detection dataset.
+
+Dataset size:
+
+- Total transactions: 284,807
+- Legitimate transactions: 284,315
+- Fraudulent transactions: 492
+
+### Model
+
+The final prediction model is XGBoost.
+
+Model evaluation:
+
+- PR-AUC: 0.8731
+
+Confusion Matrix:
+
+```text
+[[56857     7]
+ [   18    80]]
+
+The model is designed for highly imbalanced fraud detection data.
+
+## Risk Engine
+
+The predicted fraud probability is converted into a risk score and decision.
+
+| Fraud Probability | Risk Level | Decision |
+|---|---|---|
+| < 30% | Low Risk | APPROVE |
+| 30% – 59% | Medium Risk | REVIEW |
+| ≥ 60% | High Risk | BLOCK |
+
+## Explainability
+
+SHAP is used to explain individual predictions.
+
+Example:
+
+```text
+TOP RISK FACTORS
+
+V14 → increased fraud risk
+V10 → increased fraud risk
+V12 → increased fraud risk
+V26 → decreased fraud risk
+V4 → increased fraud risk.
+```
+
+## Project Structure
+
+```text
+Credit-card-Fraud-Detection-Analysis/
+│
+├── dashboard/
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
+│
+├── models/
+│   ├── fraud_model_xgb.pkl
+│   ├── fraud_model.pkl
+│   ├── scaler_full.pkl
+│   └── scaler.pkl
+│
+├── main.py
+├── risk_engine.py
+├── explain_prediction.py
+├── fraud_detection_model.py
+├── predict_transaction.py
+├── train_xgboost.py
+├── train_full_model.py
+├── evaluate_xgboost.py
+├── evaluate_full_model.py
+├── evaluate_model.py
+├── threshold_tuning.py
+├── test_risk_engine.py
+├── fraud_analysis.sql
+├── requirements.txt
+├── README.md
+└── .gitignore
+```
+
+## Installation
+
+Create a virtual environment:
+
+```bash
+python -m venv venv
+```
+
+Activate it on Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Dataset
 
-The dataset used in this project is the **Credit Card Fraud Detection Dataset**.
+The full `creditcard.csv` dataset is not included in the repository because of its large file size.
 
-Total Transactions: 284,807  
-Fraudulent Transactions: 492  
+Place the downloaded dataset in the project root as:
 
-Due to GitHub file size limitations, only a sample dataset is included in this repository.
+```text
+creditcard.csv
+```
 
-Full dataset available at:
-https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud
+## Run the API
 
-Dataset Features:
-- Time
-- Transaction Amount
-- PCA transformed features (V1–V28)
-- Class (0 = Normal, 1 = Fraud)
+```bash
+uvicorn main:app --reload
+```
 
----
+API:
 
-## Project Workflow
+```text
+http://127.0.0.1:8000
+```
 
-1. Data exploration using SQL
-2. Fraud pattern analysis
-3. Machine learning fraud prediction
-4. Fraud probability calculation
-5. Power BI dashboard visualization
+Swagger documentation:
 
----
+```text
+http://127.0.0.1:8000/docs
+```
 
-## Machine Learning Model
+## API Endpoints
 
-The fraud prediction model was built using  
-:contentReference[oaicite:1]{index=1} in :contentReference[oaicite:2]{index=2}.
+### Health Check
 
-Steps included:
-- Data preprocessing
-- Train-test split
-- Model training
-- Fraud probability prediction
-- Risk classification
+```text
+GET /
+```
 
-Model Accuracy:
-~99%
+### Predict Transaction
 
----
+```text
+POST /predict
+```
 
-## Power BI Dashboard
+Example:
 
-The dashboard provides an overview of fraud patterns and AI predictions.
+```json
+{
+  "fraud_probability": 0.9889,
+  "risk_score": 99,
+  "risk_level": "High Risk",
+  "decision": "BLOCK"
+}
+```
 
-Dashboard Features:
+### Demo Transactions
 
-Fraud Analytics Overview
-- Fraud vs Normal Transactions
-- Transaction Amount Distribution
-- Fraud Transactions Over Time
-- Risk Category Analysis
+```text
+GET /demo/normal
+GET /demo/suspicious
+GET /demo/fraud
+```
 
-AI Fraud Detection
-- Fraud Probability Distribution
-- Risk Level Distribution
-- Predicted vs Actual Fraud
-- High Risk Transaction Identification
+These endpoints select real transactions from the dataset for demonstration.
 
-## Power BI Dashboard Preview
+## Dashboard
 
-### Fraud Analytics Overview
-![Dashboard](images/dashboard_overview.png)
+Open:
 
-### AI Fraud Detection
-![Dashboard](images/ai_fraud_dashboard.png)
----
+```text
+dashboard/index.html
+```
 
-## Repository Structure
-fraud-detection-analytics
-│
-├── dataset
-│ └── creditcard_sample.csv
+The dashboard provides:
 
-├── python
-│ └── fraud_detection_model.py
+- Fraud probability
+- Risk score
+- Risk level
+- Decision
+- Transaction amount
+- Transaction time
+- Normal payment demo
+- Suspicious payment demo
+- Fraudulent payment demo
+- Top SHAP risk factors
+- Recent transaction history
 
-├── sql
-│ └── fraud_analysis.sql
+## Technologies
 
-├── results
-│ └── fraud_predictions_sample.csv
+- Python
+- Pandas
+- Scikit-learn
+- XGBoost
+- SHAP
+- FastAPI
+- Pydantic
+- HTML
+- CSS
+- JavaScript
+- SQL
 
-├── images
-│ └── dashboard_preview.png
+## Project Goal
 
-└── README.md
+The goal of AI Risk Manager is to demonstrate how machine learning can be integrated into a practical fraud detection and risk management system.
 
+Instead of only returning a fraud prediction, the system provides an actionable decision and an explanation of the factors influencing the prediction.
 
----
+## Disclaimer
 
-## Key Insights
-
-- Fraud transactions represent only ~0.17% of total transactions.
-- High-value transactions tend to have higher fraud probability.
-- Most transactions fall into the low-risk category.
-- The machine learning model successfully identifies fraudulent activity with high accuracy.
-
----
-
-## Author
-Thanuj Reddy Gopu  
-Data Analyst / Machine Learning Enthusiast
+This project is for educational and demonstration purposes and should not be used as a production financial fraud detection system without additional validation, security, monitoring, and compliance controls.
